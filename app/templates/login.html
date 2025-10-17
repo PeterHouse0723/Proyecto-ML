@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Login - Proyecto ML</title>
+
+    <!-- Enlace al archivo CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="card">
+    <h2>Módulo de Login</h2>
+    <p>Ingresa usuario y contraseña de prueba.</p>
+
+    <form method="POST" action="{{ url_for('login') }}">
+      <label for="username">Usuario</label>
+      <input id="username" name="username" type="text" required placeholder="usuario de prueba">
+
+      <label for="password">Contraseña</label>
+      <input id="password" name="password" type="password" required placeholder="contraseña de prueba">
+
+      <button type="submit">Entrar</button>
+    </form>
+
+    {% if error %}
+      <div class="msg">{{ error }}</div>
+    {% endif %}
+  </div>
+</body>
+</html>
