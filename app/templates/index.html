@@ -3,10 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Principal</title>
+    <title>FocusUp</title>
+
+    <!-- Enlace al CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body>
-    <h1>Bienvenido al Proyecto de ML</h1>
-    <p>Este proyecto estudia la influencia del uso del celular en la procrastinación estudiantil.</p>
+    <!-- Encabezado -->
+    <header class="main-header">
+        <div class="header-left">
+            <img src="{{ url_for('static', filename='img/focusup1.png') }}" alt="Logo FocusUp" class="logo">
+        </div>
+
+        <div class="header-center">
+            <h1>Proyecto ML</h1>
+        </div>
+
+        <div class="header-right">
+            <img src="{{ url_for('static', filename='img/logoUdec.png') }}" alt="Logo UDEC" class="logo">
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main>
+        <section class="content">
+            <h2>Bienvenido a FocusUp</h2>
+            <p>Esta es la página principal de tu proyecto de Machine Learning.</p>
+        </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="main-footer">
+        <p>© 2025 FocusUp | Proyecto desarrollado por Sebastián Casas / Miguel Díaz</p>
+    </footer>
 </body>
 </html>
