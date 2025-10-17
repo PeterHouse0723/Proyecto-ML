@@ -1,31 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Login - Proyecto ML</title>
+  <title>Login - Proyecto ML</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <!-- Enlace al archivo CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-</head>
 <body>
-  <div class="card">
-    <h2>Módulo de Login</h2>
-    <p>Ingresa usuario y contraseña de prueba.</p>
 
-    <form method="POST" action="{{ url_for('login') }}">
-      <label for="username">Usuario</label>
-      <input id="username" name="username" type="text" required placeholder="usuario de prueba">
+  <div class="container">
+    
+    <div class="image-container">
+        <img src="{{ url_for('static', filename='img/focusup1.png') }}" alt="Login Illustration">
 
-      <label for="password">Contraseña</label>
-      <input id="password" name="password" type="password" required placeholder="contraseña de prueba">
+    </div>
 
-      <button type="submit">Entrar</button>
-    </form>
+    <div class="form-container">
+      <h2>Inicia Sesión</h2>
 
-    {% if error %}
-      <div class="msg">{{ error }}</div>
-    {% endif %}
+      <form method="POST" action="{{ url_for('login') }}">
+        <div class="input-group">
+            <label for="username">Usuario</label>
+            <div style="position:relative;">
+              <input type="text" id="username" name="username" placeholder="Su nombre" required>
+              <span class="input-icon"><i class="fa fa-user"></i></span>
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="password">Contraseña</label>
+            <div style="position:relative;">
+              <input type="password" id="password" name="password" placeholder="Contraseña" required>
+              <span class="input-icon eye-toggle" onclick="togglePassword()">
+                <i id="eyeIcon" class="fa fa-eye-slash"></i>
+              </span>
+            </div>
+          </div>
+
+
+        <div class="remember">
+          <input type="checkbox" id="remember" name="remember">
+          <label for="remember">Acuérdate de mí</label>
+        </div>
+
+        <button type="submit">Ingresar</button>
+
+        {% if error %}
+          <div class="error">{{ error }}</div>
+        {% endif %}
+      </form>
+    </div>
   </div>
+
+<script>
+function togglePassword() {
+  var pwd = document.getElementById("password");
+  var icon = document.getElementById("eyeIcon");
+  if (pwd.type === "password") {
+    pwd.type = "text";
+    icon.classList.remove("fa-eye-slash");
+    icon.classList.add("fa-eye");
+  } else {
+    pwd.type = "password";
+    icon.classList.remove("fa-eye");
+    icon.classList.add("fa-eye-slash");
+  }
+}
+</script>
 </body>
 </html>
