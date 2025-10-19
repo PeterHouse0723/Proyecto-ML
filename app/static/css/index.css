@@ -47,3 +47,60 @@ main h2 {
     margin-top: 60px;
     font-size: 14px;
 }
+/* ---------- USER MENU ---------- */
+.user-menu-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: 35px 60px 0 auto; 
+    width: fit-content;
+}
+
+
+.user-icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.user-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Menú desplegable  */
+.dropdown-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    display: none;
+    z-index: 100;
+    min-width: 160px;
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px 0;
+}
+
+.dropdown-menu li {
+    padding: 10px 20px;
+}
+
+.dropdown-menu li:hover {
+    background-color: #f2f2f2;
+}
+
+.dropdown-menu a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    display: block;
+}

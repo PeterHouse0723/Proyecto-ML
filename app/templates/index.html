@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FocusUp</title>
+    <title>FocusUp - Proyecto ML</title>
 
-    <!-- Enlace al CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script defer src="{{ url_for('static', filename='css/js/index.js') }}"></script>
 </head>
 <body>
     <!-- Encabezado -->
@@ -20,9 +20,24 @@
         </div>
 
         <div class="header-right">
-            <img src="{{ url_for('static', filename='img/logoUdec.png') }}" alt="Logo UDEC" class="logo">
-        </div>
+            <img src="{{ url_for('static', filename='img/logoUdec.png') }}" alt="Logo UDEC" class="logo udec-logo">
+
     </header>
+    <!-- Imagen de usuario -->
+            <div class="user-menu-container">
+                <img src="{{ url_for('static', filename='img/user.png') }}" alt="Usuario" class="user-icon" id="userIcon">
+
+                <!-- Menú desplegable -->
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <ul>
+                        <li><a href="#">Cuenta</a></li>
+                        <li><a href="#">Inicio</a></li>
+                        <li><a href="#">Calculadora</a></li>
+                        <li><a href="#">Salir</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
     <!-- Contenido principal -->
     <main>
