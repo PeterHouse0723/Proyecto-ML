@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusUp-Formulario</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+    <script defer src="{{ url_for('static', filename='css/js/index.js') }}"></script>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header class="main-header">
+        <div class="header-left">
+            <img src="{{ url_for('static', filename='img/focusup1.png') }}" alt="Logo FocusUp" class="logo">
+        </div>
+
+        <div class="header-center">
+            <h1>Proyecto ML</h1>
+        </div>
+
+        <div class="header-right">
+            <img src="{{ url_for('static', filename='img/logoUdec.png') }}" alt="Logo UDEC" class="logo udec-logo">
+
+    </header>
+    <!-- Imagen de usuario -->
+            <div class="user-menu-container">
+                <img src="{{ url_for('static', filename='img/user.png') }}" alt="Usuario" class="user-icon" id="userIcon">
+
+                <!-- Menú desplegable -->
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <ul>
+                        <li><a href="#">Cuenta</a></li>
+                        <li><a href="/index">Inicio</a></li>
+                        <li><a href="/formulario">Formulario</a></li>
+                        <li><a href="/">Salir</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    <!-- Contenido principal -->
+    <main>
+    
+
+    </main><!-- main de contenido -->
+
+    <!-- Pie de página -->
+    <footer class="main-footer">
+        <p>© 2025 FocusUp | Proyecto desarrollado por Sebastián Casas / Miguel Díaz</p>
+    </footer>
+</body>
+</html>
