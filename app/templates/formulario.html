@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusUp-Formulario</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+    <script defer src="{{ url_for('static', filename='css/js/index.js') }}"></script>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header class="main-header">
+        <div class="header-left">
+            <img src="{{ url_for('static', filename='img/focusup1.png') }}" alt="Logo FocusUp" class="logo">
+        </div>
+
+        <div class="header-center">
+            <h1>Proyecto ML</h1>
+        </div>
+
+        <div class="header-right">
+            <img src="{{ url_for('static', filename='img/logoUdec.png') }}" alt="Logo UDEC" class="logo udec-logo">
+
+    </header>
+    <!-- Imagen de usuario -->
+            <div class="user-menu-container">
+                <img src="{{ url_for('static', filename='img/user.png') }}" alt="Usuario" class="user-icon" id="userIcon">
+
+                <!-- Menú desplegable -->
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <ul>
+                        <li><a href="#">Cuenta</a></li>
+                        <li><a href="/index">Inicio</a></li>
+                        <li><a href="/formulario">Formulario</a></li>
+                        <li><a href="/">Salir</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    <!-- Contenido principal -->
+    <main>
+                <div class="block1">
+            <div class="block1-left">
+                <h2 class="block1-title">Bienvenido al formulario de FocusUp</h2>
+                <div class="block1-text">
+                <p>
+                    El objetivo de este formulario es recolectar información sobre tus hábitos de uso del celular, rutinas de estudio y percepción acerca de la procrastinación.
+                </p>
+                <p>
+                    Con tus respuestas, podremos construir un modelo de Machine Learning capaz de identificar y predecir patrones de procrastinación en estudiantes universitarios, buscando generar estrategias y recomendaciones personalizadas que te ayuden a mejorar tu rendimiento académico y tu bienestar digital.
+                </p>
+                <p>
+                    Tus datos serán manejados de manera confidencial y solo serán utilizados para fines académicos y de investigación.
+                </p>
+                </div>
+            </div>
+            <div class="block1-right">
+                <img src="{{ url_for('static', filename='img/formulario.jpg') }}" alt="Img Ref-Formulario" class="block1-img">
+            </div>
+            </div>
+        <div class="form-container">
+        <h2 class="block1-title-f">Formulario de FocusUp</h2>
+            <form class="form-demo">
+  <label for="age">Edad:</label>
+  <input type="number" id="age" name="age" min="10" max="30">
+
+  <label for="gender">Género:</label>
+  <select id="gender" name="gender">
+    <option value="" disabled selected>Seleccione</option>
+    <option value="femenino">Femenino</option>
+    <option value="masculino">Masculino</option>
+    <option value="otro">Otro</option>
+    <option value="prefiero_no_decir">Prefiero no decir</option>
+  </select>
+
+  <label for="schoolgrade">Grado escolar/universitario:</label>
+  <input type="text" id="schoolgrade" name="schoolgrade">
+
+  <label for="daily_usage">Horas diarias usando el celular:</label>
+  <input type="number" id="daily_usage" name="daily_usage" min="0" step="0.1">
+
+  <label for="sleephours">Horas de sueño diarias:</label>
+  <input type="number" id="sleephours" name="sleephours" min="0" max="24" step="0.1">
+
+  <label for="academic_perf">Desempeño académico (promedio/calificación):</label>
+  <input type="text" id="academic_perf" name="academic_perf">
+
+  <label for="social">Cantidad de interacciones sociales/día:</label>
+  <input type="number" id="social" name="social" min="0">
+
+  <label for="exercise">Horas de ejercicio a la semana:</label>
+  <input type="number" id="exercise" name="exercise" min="0" step="0.1">
+
+  <label for="screen_before_bed">¿Cuánto tiempo usas el celular antes de dormir? (minutos):</label>
+  <input type="number" id="screen_before_bed" name="screen_before_bed" min="0">
+
+  <label for="checks_per_day">¿Cuántas veces revisas tu celular al día?:</label>
+  <input type="number" id="checks_per_day" name="checks_per_day" min="0">
+
+  <label for="apps_daily">Apps usadas diariamente:</label>
+  <select id="apps_daily" name="apps_daily" multiple>
+    <option value="whatsapp">WhatsApp</option>
+    <option value="instagram">Instagram</option>
+    <option value="facebook">Facebook</option>
+    <option value="youtube">YouTube</option>
+    <option value="tiktok">TikTok</option>
+    <option value="otros">Otros</option>
+  </select>
+
+  <label for="time_social_media">Tiempo en redes sociales (minutos/día):</label>
+  <input type="number" id="time_social_media" name="time_social_media" min="0">
+
+  <label for="time_gaming">Tiempo en videojuegos (minutos/día):</label>
+  <input type="number" id="time_gaming" name="time_gaming" min="0">
+
+  <label for="time_education">Tiempo en apps educativas (minutos/día):</label>
+  <input type="number" id="time_education" name="time_education" min="0">
+
+  <label for="purpose">¿Para qué usas principalmente tu celular?</label>
+  <select id="purpose" name="purpose">
+    <option value="" disabled selected>Seleccione</option>
+    <option value="educacion">Educación</option>
+    <option value="redes">Redes sociales</option>
+    <option value="entretenimiento">Entretenimiento</option>
+    <option value="comunicacion">Comunicación</option>
+    <option value="juegos">Juegos</option>
+    <option value="otro">Otro</option>
+  </select>
+
+  <label for="weekend_usage">Horas de uso del celular en fin de semana:</label>
+  <input type="number" id="weekend_usage" name="weekend_usage" min="0" step="0.1">
+
+  <button type="submit">Enviar</button>
+</form>
+
+          
+        </div>
+
+
+          
+
+    </main><!-- main de contenido -->
+
+    <!-- Pie de página -->
+    <footer class="main-footer">
+        <p>© 2025 FocusUp | Proyecto desarrollado por Sebastián Casas / Miguel Díaz</p>
+    </footer>
+</body>
+</html>
