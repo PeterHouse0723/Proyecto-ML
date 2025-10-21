@@ -100,7 +100,7 @@ body {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto;
   gap: 20px 40px;
-  max-width: 1200px;
+  max-width: 1000px;
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.07);
@@ -151,4 +151,55 @@ body {
   border-radius: 16px;
   object-fit: contain;
   box-shadow: 0 2px 10px rgba(0,0,0,0.09);
+}
+/*bloque de contenido azul*/
+
+.blockaz {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 20px 40px;
+  max-width: 1000px;
+  background: #2c3e50;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  padding: 48px 64px;
+  margin: 55px auto;
+}
+.blockaz-left {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.blockaz-img {
+  width: 100%;
+  max-width: 450px;
+  border-radius: 16px;
+  object-fit: contain;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.09);
+}
+.blockaz-right {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  color: #fff;
+}
+.blockaz-title {
+  font-size: 3rem;
+  margin-top: 0;
+  margin-bottom: 40px;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+}
+.blockaz-text {
+  font-size: 1.1rem;
+  color: #fff;
+  text-align: left;
+  max-width: 500px;
 }
