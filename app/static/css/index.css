@@ -129,7 +129,15 @@ body {
 
 .block_1-text {
   font-size: 1.1rem;
-  color: #333;
+  color: #000000;
+  margin: 0;
+  text-align: left;
+  line-height: 1.6;
+  max-width: 500px;
+}
+.block_LN-text {
+  font-size: 1.1rem;
+  color: #ffffff;
   margin: 0;
   text-align: left;
   line-height: 1.6;
@@ -202,4 +210,33 @@ body {
   color: #fff;
   text-align: left;
   max-width: 500px;
+}
+/*referencias bibliograficas*/
+.block1.referencias {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  padding: 48px 64px;
+  margin: 55px auto;
+  max-width: 1000px;
+}
+
+.block1-title {
+  font-size: 2.2rem;
+  margin-bottom: 28px;
+  color: #004aad;
+  font-weight: 700;
+  text-align: center;
+}
+
+.block1-list {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #444;
+  padding-left: 25px;
+  margin-bottom: 0;
+}
+
+.block1-list li {
+  margin-bottom: 15px;
 }
