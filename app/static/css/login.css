@@ -1,6 +1,6 @@
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #ff0000;
+  background-color: #ffffff;
   margin: 0;
   display: flex;
   justify-content: center;
@@ -114,4 +114,27 @@ button:hover {
   color: red;
   text-align: center;
   margin-top: 10px;
+}
+/* ---------- boton registrarse ---------- */
+
+.button_registrarse {
+  background-color: #fff;
+  color: #444;
+  border: 1px solid #c4c4c4;
+  padding: 12px 0;
+  width: 100%;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.button_registrarse:hover {
+  background-color: #357abd;
+  color: #fff;
+  border: 1px solid #357abd;
+}
+.btn-registrarse button {
+  width: 100%;
+  margin-top: 12px;
 }
