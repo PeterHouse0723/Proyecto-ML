@@ -40,8 +40,13 @@
           <input type="checkbox" id="remember" name="remember">
           <label for="remember">Acuérdate de mí</label>
         </div>
+    
+        <button type="submit">Ingresar</button>   
 
-        <button type="submit">Ingresar</button>
+      <div class="btn-registrarse">
+        <button type="button" class="button_registrarse" onclick="window.location.href='{{ url_for('newuser') }}'">Registrarse</button>
+      </div>
+
 
         {% if error %}
           <div class="error">{{ error }}</div>
