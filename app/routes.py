@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for
 from app import app
 
-# Usuarios de prueba (puedes agregar más si quieres)
+# Usuarios de prueba
 usuarios = {
     "Peter": "1234",
     "Maria": "abcd",
@@ -10,8 +10,13 @@ usuarios = {
 
 @app.route('/')
 def home():
-    # Redirige automáticamente al login
-    return redirect(url_for('login'))
+    # Redirige automáticamente a inicio (página pública)
+    return redirect(url_for('inicio'))
+
+@app.route('/inicio')
+def inicio():
+    # Página de inicio pública (sin necesidad de login)
+    return render_template('inicio.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -32,9 +37,13 @@ def login():
 
 @app.route('/index')
 def index():
+    # Página protegida (requiere login)
     return render_template('index.html')
 
 @app.route("/formulario")
 def formulario():
     return render_template("formulario.html")
 
+@app.route('/newuser')
+def newuser():
+    return render_template('newuser.html')

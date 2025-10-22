@@ -1,0 +1,242 @@
+
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background-color: #f7f9fc;
+    color: #333;
+}
+/* ---------- ENCABEZADO ---------- */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 25px 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    height: 100px;
+    border-radius: 12px;
+    object-fit: contain;
+}
+
+.header-center h1 {
+    margin: 0;
+    font-size: 38px;
+    color: #2c3e50;
+}
+
+/* ---------- PIE DE PÁGINA ---------- */
+.main-footer {
+    background-color: #2c3e50;
+    color: #fff;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 60px;
+    font-size: 14px;
+}
+/* ---------- USER MENU ---------- */
+.user-menu-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: 35px 60px 0 auto; 
+    width: fit-content;
+}
+
+
+.user-icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.user-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Menú desplegable  */
+.dropdown-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    display: none;
+    z-index: 100;
+    min-width: 160px;
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px 0;
+}
+
+.dropdown-menu li {
+    padding: 10px 20px;
+}
+
+.dropdown-menu li:hover {
+    background-color: #f2f2f2;
+}
+
+.dropdown-menu a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    display: block;
+}
+
+/* bloques de contenido */
+.block_1 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 20px 40px;
+  max-width: 1000px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  padding: 48px 64px;
+  margin: 55px auto;
+}
+
+.block_1-left {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.block_1-title {
+  font-size: 3rem;
+  margin-top: 0;
+  margin-bottom: 40px;
+  color: #004aad;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.block_1-text {
+  font-size: 1.1rem;
+  color: #000000;
+  margin: 0;
+  text-align: left;
+  line-height: 1.6;
+  max-width: 500px;
+}
+.block_LN-text {
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin: 0;
+  text-align: left;
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.block_1-right {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.block_1-img {
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  border-radius: 16px;
+  object-fit: contain;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.09);
+}
+/*bloque de contenido azul*/
+
+.blockaz {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 20px 40px;
+  max-width: 1000px;
+  background: #2c3e50;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  padding: 48px 64px;
+  margin: 55px auto;
+}
+.blockaz-left {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.blockaz-img {
+  width: 100%;
+  max-width: 450px;
+  border-radius: 16px;
+  object-fit: contain;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.09);
+}
+.blockaz-right {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  color: #fff;
+}
+.blockaz-title {
+  font-size: 3rem;
+  margin-top: 0;
+  margin-bottom: 40px;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+}
+.blockaz-text {
+  font-size: 1.1rem;
+  color: #fff;
+  text-align: left;
+  max-width: 500px;
+}
+/*referencias bibliograficas*/
+.block1.referencias {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  padding: 48px 64px;
+  margin: 55px auto;
+  max-width: 1000px;
+}
+
+.block1-title {
+  font-size: 2.2rem;
+  margin-bottom: 28px;
+  color: #004aad;
+  font-weight: 700;
+  text-align: center;
+}
+
+.block1-list {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #444;
+  padding-left: 25px;
+  margin-bottom: 0;
+}
+
+.block1-list li {
+  margin-bottom: 15px;
+}
