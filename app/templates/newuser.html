@@ -9,6 +9,9 @@
 <body>
     <div class="registro-container">
         <h2>Registro de Nuevo Usuario</h2>
+        {% if error %}
+        <div class="error-message">{{ error }}</div>
+        {% endif %}
         <form action="/register" method="post" class="registro-form">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required />
