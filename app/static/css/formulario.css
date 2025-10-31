@@ -28,8 +28,8 @@ body {
 
 /* ---------- PIE DE PÁGINA ---------- */
 .main-footer {
-    background-color: #2c3e50;
-    color: #fff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
     text-align: center;
     padding: 15px 0;
     margin-top: 60px;
@@ -157,7 +157,7 @@ body {
   max-width: 1000px;
   background: #2c3e50;
   border-radius: 18px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 48px 64px;
   margin: 55px auto;
 }
@@ -206,3 +206,4 @@ body {
   font-size: 1.1rem;
   cursor: pointer;
 }
+.form-note{background:#e3f2fd;padding:15px;border-radius:8px;margin-bottom:20px;color:#1565c0;border-left:4px solid #1976d2;}
