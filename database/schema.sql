@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS usuarios (
     genero ENUM('M', 'F', 'O') NOT NULL,
     correo VARCHAR(255) NOT NULL UNIQUE,
     clave VARCHAR(255) NOT NULL,
+    grado_escolaridad VARCHAR(50) DEFAULT NULL,
+    fecha_nacimiento DATE DEFAULT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_correo (correo)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
