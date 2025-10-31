@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Cuenta - Proyecto ML</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cuenta.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mi Cuenta</h1>
+            <div class="header-actions">
+                <a href="{{ url_for('index') }}" class="btn-secondary">Volver al inicio</a>
+                <a href="{{ url_for('logout') }}" class="btn-danger">Cerrar sesion</a>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="cuenta-container">
+            <div class="profile-section">
+                <div class="profile-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <h2>{{ usuario.nombre }} {{ usuario.apellido }}</h2>
+                <p class="profile-email">{{ usuario.correo }}</p>
+            </div>
+
+            <form id="perfilForm" action="{{ url_for('actualizar_cuenta') }}" method="POST" class="profile-form">
+                <div class="form-section">
+                    <h3>Informacion Personal</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombre">Nombre *</label>
+                            <input type="text" id="nombre" name="nombre" value="{{ usuario.nombre }}" required disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="apellido">Apellido *</label>
+                            <input type="text" id="apellido" name="apellido" value="{{ usuario.apellido }}" required disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edad">Edad *</label>
+                            <input type="number" id="edad" name="edad" value="{{ usuario.edad }}" min="1" max="120" required disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="genero">Genero *</label>
+                            <select id="genero" name="genero" required disabled>
+                                <option value="M" {% if usuario.genero == 'M' %}selected{% endif %}>Masculino</option>
+                                <option value="F" {% if usuario.genero == 'F' %}selected{% endif %}>Femenino</option>
+                                <option value="O" {% if usuario.genero == 'O' %}selected{% endif %}>Otro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correo">Correo Electronico *</label>
+                        <input type="email" id="correo" name="correo" value="{{ usuario.correo }}" required disabled>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Informacion Adicional</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento"
+                                   value="{{ usuario.fecha_nacimiento if usuario.fecha_nacimiento else '' }}" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="grado_escolaridad">Grado de Escolaridad</label>
+                            <select id="grado_escolaridad" name="grado_escolaridad" disabled>
+                                <option value="">Seleccionar...</option>
+                                <option value="Primaria" {% if usuario.grado_escolaridad == 'Primaria' %}selected{% endif %}>Primaria</option>
+                                <option value="Secundaria" {% if usuario.grado_escolaridad == 'Secundaria' %}selected{% endif %}>Secundaria</option>
+                                <option value="Preparatoria" {% if usuario.grado_escolaridad == 'Preparatoria' %}selected{% endif %}>Preparatoria</option>
+                                <option value="Universidad" {% if usuario.grado_escolaridad == 'Universidad' %}selected{% endif %}>Universidad</option>
+                                <option value="Posgrado" {% if usuario.grado_escolaridad == 'Posgrado' %}selected{% endif %}>Posgrado</option>
+                                <option value="Doctorado" {% if usuario.grado_escolaridad == 'Doctorado' %}selected{% endif %}>Doctorado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" id="btnEditar" class="btn-primary" onclick="habilitarEdicion()">Editar</button>
+                    <button type="submit" id="btnGuardar" class="btn-success" style="display: none;">Guardar Cambios</button>
+                    <button type="button" id="btnCancelar" class="btn-secondary" style="display: none;" onclick="cancelarEdicion()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let datosOriginales = {};
+
+        // Guardar datos originales al cargar la pagina
+        window.onload = function() {
+            guardarDatosOriginales();
+        };
+
+        function guardarDatosOriginales() {
+            const form = document.getElementById('perfilForm');
+            const inputs = form.querySelectorAll('input, select');
+
+            inputs.forEach(input => {
+                datosOriginales[input.name] = input.value;
+            });
+        }
+
+        function habilitarEdicion() {
+            const form = document.getElementById('perfilForm');
+            const inputs = form.querySelectorAll('input, select');
+
+            inputs.forEach(input => {
+                input.disabled = false;
+            });
+
+            document.getElementById('btnEditar').style.display = 'none';
+            document.getElementById('btnGuardar').style.display = 'inline-block';
+            document.getElementById('btnCancelar').style.display = 'inline-block';
+
+            // Anadir clase para cambiar el estilo visual
+            form.classList.add('editing');
+        }
+
+        function cancelarEdicion() {
+            const form = document.getElementById('perfilForm');
+            const inputs = form.querySelectorAll('input, select');
+
+            // Restaurar valores originales
+            inputs.forEach(input => {
+                if (datosOriginales[input.name] !== undefined) {
+                    input.value = datosOriginales[input.name];
+                }
+                input.disabled = true;
+            });
+
+            document.getElementById('btnEditar').style.display = 'inline-block';
+            document.getElementById('btnGuardar').style.display = 'none';
+            document.getElementById('btnCancelar').style.display = 'none';
+
+            // Remover clase de edicion
+            form.classList.remove('editing');
+        }
+
+        // Confirmacion antes de guardar
+        document.getElementById('perfilForm').addEventListener('submit', function(e) {
+            if (!confirm('Estas seguro de que deseas guardar los cambios?')) {
+                e.preventDefault();
+            }
+        });
+
+        // Cerrar alertas automaticamente despues de 5 segundos
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

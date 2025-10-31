@@ -30,10 +30,10 @@
                 <!-- Menú desplegable -->
                 <div class="dropdown-menu" id="dropdownMenu">
                     <ul>
-                        <li><a href="#">Cuenta</a></li>
-                        <li><a href="/index">Inicio</a></li>
-                        <li><a href="/formulario">Formulario</a></li>
-                        <li><a href="/inicio">Salir</a></li>
+                        <li><a href="{{ url_for('cuenta') }}">Cuenta</a></li>
+                        <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                        <li><a href="{{ url_for('formulario') }}">Formulario</a></li>
+                        <li><a href="{{ url_for('logout') }}">Salir</a></li>
                     </ul>
                 </div>
             </div>

@@ -91,3 +91,49 @@ class Usuario:
         """
         query = "SELECT id, nombre, apellido, edad, genero, correo, fecha_registro FROM usuarios"
         return db.fetch_query(query)
+
+    @staticmethod
+    def obtener_por_id(usuario_id):
+        """
+        Obtiene un usuario por su ID
+
+        Args:
+            usuario_id (int): ID del usuario
+
+        Returns:
+            dict: Datos del usuario o None si no existe
+        """
+        query = "SELECT id, nombre, apellido, edad, genero, correo, grado_escolaridad, fecha_nacimiento FROM usuarios WHERE id = %s"
+        params = (usuario_id,)
+
+        resultado = db.fetch_query(query, params)
+        return resultado[0] if resultado else None
+
+    @staticmethod
+    def actualizar_usuario(usuario_id, nombre, apellido, edad, genero, correo, grado_escolaridad=None, fecha_nacimiento=None):
+        """
+        Actualiza los datos de un usuario
+
+        Args:
+            usuario_id (int): ID del usuario
+            nombre (str): Nombre del usuario
+            apellido (str): Apellido del usuario
+            edad (int): Edad del usuario
+            genero (str): Género del usuario
+            correo (str): Correo electrónico
+            grado_escolaridad (str): Grado de escolaridad
+            fecha_nacimiento (str): Fecha de nacimiento (YYYY-MM-DD)
+
+        Returns:
+            bool: True si se actualizó correctamente
+        """
+        query = """
+            UPDATE usuarios
+            SET nombre = %s, apellido = %s, edad = %s, genero = %s,
+                correo = %s, grado_escolaridad = %s, fecha_nacimiento = %s
+            WHERE id = %s
+        """
+        params = (nombre, apellido, edad, genero, correo, grado_escolaridad, fecha_nacimiento, usuario_id)
+
+        resultado = db.execute_query(query, params)
+        return resultado is not None
