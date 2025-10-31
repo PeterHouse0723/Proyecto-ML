@@ -43,3 +43,15 @@ instance/
 
 # Logs
 *.log
+
+# Archivos temporales
+*.tmp
+*.temp
+NUL
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# NO ignorar archivos pkl del modelo (son necesarios)
+!ml/models/*.pkl

@@ -2,6 +2,12 @@ from flask import render_template, request, redirect, url_for, flash, session
 from app import app
 from app.models import Usuario
 from functools import wraps
+import sys
+from pathlib import Path
+
+# Agregar la carpeta ml al path para importar el predictor
+sys.path.insert(0, str(Path(__file__).parent.parent / 'ml'))
+from predict import predictor
 
 # Decorador para rutas que requieren login
 def login_required(f):
@@ -214,3 +220,64 @@ def logout():
     session.clear()
     flash('Sesión cerrada exitosamente', 'success')
     return redirect(url_for('inicio'))
+
+@app.route('/procesar_formulario', methods=['POST'])
+@login_required
+def procesar_formulario():
+    """Procesa el formulario y genera la prediccion"""
+    try:
+        usuario_id = session.get('usuario_id')
+
+        # Obtener datos del formulario
+        datos_formulario = {
+            'daily_usage': request.form.get('daily_usage'),
+            'sleephours': request.form.get('sleephours'),
+            'academic_perf': request.form.get('academic_perf'),
+            'exercise': request.form.get('exercise'),
+            'screen_before_bed': request.form.get('screen_before_bed'),
+            'checks_per_day': request.form.get('checks_per_day'),
+            'apps_daily': request.form.getlist('apps_daily'),  # Multiple select
+            'time_social_media': request.form.get('time_social_media'),
+            'time_gaming': request.form.get('time_gaming'),
+            'time_education': request.form.get('time_education'),
+            'purpose': request.form.get('purpose'),
+            'weekend_usage': request.form.get('weekend_usage')
+        }
+
+        # Obtener datos de la cuenta si existe
+        datos_cuenta = None
+        if usuario_id and usuario_id != 0:
+            usuario = Usuario.obtener_por_id(usuario_id)
+            if usuario:
+                datos_cuenta = {
+                    'edad': usuario['edad'],
+                    'genero': usuario['genero'],
+                    'grado_escolaridad': usuario.get('grado_escolaridad')
+                }
+
+        # Realizar prediccion
+        resultado = predictor.predecir(datos_formulario, datos_cuenta)
+
+        # Guardar resultado en sesion para mostrarlo
+        session['ultimo_resultado'] = resultado
+
+        return redirect(url_for('resultados'))
+
+    except Exception as e:
+        print(f"Error al procesar formulario: {e}")
+        import traceback
+        traceback.print_exc()
+        flash('Error al procesar el formulario. Intenta nuevamente.', 'error')
+        return redirect(url_for('formulario'))
+
+@app.route('/resultados')
+@login_required
+def resultados():
+    """Muestra los resultados de la prediccion"""
+    resultado = session.get('ultimo_resultado')
+
+    if not resultado:
+        flash('No hay resultados disponibles. Completa el formulario primero.', 'warning')
+        return redirect(url_for('formulario'))
+
+    return render_template('resultados.html', resultado=resultado)

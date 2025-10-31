@@ -62,77 +62,71 @@
             </div>
         <div class="form-container">
         <h2 class="block1-title-f">Formulario de FocusUp</h2>
-            <form class="form-demo">
-  <label for="age">Edad:</label>
-  <input type="number" id="age" name="age" min="10" max="30">
+            <form class="form-demo" action="{{ url_for('procesar_formulario') }}" method="POST">
 
-  <label for="gender">Género:</label>
-  <select id="gender" name="gender">
-    <option value="" disabled selected>Seleccione</option>
-    <option value="femenino">Femenino</option>
-    <option value="masculino">Masculino</option>
-    <option value="otro">Otro</option>
-    <option value="prefiero_no_decir">Prefiero no decir</option>
-  </select>
+  <p class="form-note">Los datos de edad, genero y grado escolar se tomaran de tu perfil de cuenta.</p>
 
-  <label for="schoolgrade">Grado escolar/universitario:</label>
-  <input type="text" id="schoolgrade" name="schoolgrade">
+  <label for="daily_usage">Horas diarias usando el celular: *</label>
+  <input type="number" id="daily_usage" name="daily_usage" min="0" step="0.1" required>
 
-  <label for="daily_usage">Horas diarias usando el celular:</label>
-  <input type="number" id="daily_usage" name="daily_usage" min="0" step="0.1">
+  <label for="sleephours">Horas de sueno diarias: *</label>
+  <input type="number" id="sleephours" name="sleephours" min="0" max="24" step="0.1" required>
 
-  <label for="sleephours">Horas de sueño diarias:</label>
-  <input type="number" id="sleephours" name="sleephours" min="0" max="24" step="0.1">
+  <label for="academic_perf">Desempeno academico (0-5.0, ej: 4.5): *</label>
+  <input type="number" id="academic_perf" name="academic_perf" min="0" max="5" step="0.1" required>
+  <small>Ingresa tu promedio en escala de 0 a 5.0</small>
 
-  <label for="academic_perf">Desempeño académico (promedio/calificación):</label>
-  <input type="text" id="academic_perf" name="academic_perf">
+  <label for="exercise">Horas de ejercicio a la semana: *</label>
+  <input type="number" id="exercise" name="exercise" min="0" step="0.1" required>
 
-  <label for="social">Cantidad de interacciones sociales/día:</label>
-  <input type="number" id="social" name="social" min="0">
+  <label for="screen_before_bed">Tiempo usando celular antes de dormir (horas, ej: 0.5 o 1.5): *</label>
+  <input type="number" id="screen_before_bed" name="screen_before_bed" min="0" step="0.1" required>
+  <small>Ejemplo: 0.5 horas = 30 minutos, 1.5 horas = 90 minutos</small>
 
-  <label for="exercise">Horas de ejercicio a la semana:</label>
-  <input type="number" id="exercise" name="exercise" min="0" step="0.1">
+  <label for="checks_per_day">Veces que revisas tu celular al dia: *</label>
+  <input type="number" id="checks_per_day" name="checks_per_day" min="0" required>
 
-  <label for="screen_before_bed">¿Cuánto tiempo usas el celular antes de dormir? (minutos):</label>
-  <input type="number" id="screen_before_bed" name="screen_before_bed" min="0">
-
-  <label for="checks_per_day">¿Cuántas veces revisas tu celular al día?:</label>
-  <input type="number" id="checks_per_day" name="checks_per_day" min="0">
-
-  <label for="apps_daily">Apps usadas diariamente:</label>
-  <select id="apps_daily" name="apps_daily" multiple>
+  <label for="apps_daily">Apps que usas diariamente: *</label>
+  <select id="apps_daily" name="apps_daily" multiple required>
     <option value="whatsapp">WhatsApp</option>
     <option value="instagram">Instagram</option>
     <option value="facebook">Facebook</option>
     <option value="youtube">YouTube</option>
     <option value="tiktok">TikTok</option>
+    <option value="twitter">Twitter/X</option>
+    <option value="snapchat">Snapchat</option>
+    <option value="telegram">Telegram</option>
     <option value="otros">Otros</option>
   </select>
+  <small>Mantén presionado Ctrl (Windows) o Cmd (Mac) para seleccionar multiples opciones</small>
 
-  <label for="time_social_media">Tiempo en redes sociales (minutos/día):</label>
-  <input type="number" id="time_social_media" name="time_social_media" min="0">
+  <label for="time_social_media">Tiempo en redes sociales (horas/dia, ej: 2.5): *</label>
+  <input type="number" id="time_social_media" name="time_social_media" min="0" step="0.1" required>
+  <small>Ejemplo: 2.5 horas = 2 horas y 30 minutos</small>
 
-  <label for="time_gaming">Tiempo en videojuegos (minutos/día):</label>
-  <input type="number" id="time_gaming" name="time_gaming" min="0">
+  <label for="time_gaming">Tiempo en videojuegos (horas/dia, ej: 1.5): *</label>
+  <input type="number" id="time_gaming" name="time_gaming" min="0" step="0.1" required>
+  <small>Ejemplo: 1.5 horas = 1 hora y 30 minutos</small>
 
-  <label for="time_education">Tiempo en apps educativas (minutos/día):</label>
-  <input type="number" id="time_education" name="time_education" min="0">
+  <label for="time_education">Tiempo en apps educativas (horas/dia, ej: 0.5): *</label>
+  <input type="number" id="time_education" name="time_education" min="0" step="0.1" required>
+  <small>Ejemplo: 0.5 horas = 30 minutos</small>
 
-  <label for="purpose">¿Para qué usas principalmente tu celular?</label>
-  <select id="purpose" name="purpose">
+  <label for="purpose">Uso principal del celular: *</label>
+  <select id="purpose" name="purpose" required>
     <option value="" disabled selected>Seleccione</option>
-    <option value="educacion">Educación</option>
+    <option value="educacion">Educacion</option>
     <option value="redes">Redes sociales</option>
     <option value="entretenimiento">Entretenimiento</option>
-    <option value="comunicacion">Comunicación</option>
+    <option value="comunicacion">Comunicacion</option>
     <option value="juegos">Juegos</option>
     <option value="otro">Otro</option>
   </select>
 
-  <label for="weekend_usage">Horas de uso del celular en fin de semana:</label>
-  <input type="number" id="weekend_usage" name="weekend_usage" min="0" step="0.1">
+  <label for="weekend_usage">Horas de uso del celular en fin de semana: *</label>
+  <input type="number" id="weekend_usage" name="weekend_usage" min="0" step="0.1" required>
 
-  <button type="submit">Enviar</button>
+  <button type="submit">Analizar mi nivel de procrastinacion</button>
 </form>
 
           

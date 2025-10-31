@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados - FocusUp</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/resultados.css') }}">
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-left">
+            <img src="{{ url_for('static', filename='img/focusup1.png') }}" alt="Logo FocusUp" class="logo">
+        </div>
+        <div class="header-center">
+            <h1>Resultados del Analisis</h1>
+        </div>
+        <div class="header-right">
+            <img src="{{ url_for('static', filename='img/logoUdec.png') }}" alt="Logo UDEC" class="logo udec-logo">
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Resultado Principal -->
+        <div class="result-card main-result" style="border-left-color: {{ resultado.color }}">
+            <div class="result-header">
+                <h2>Tu Nivel de Procrastinacion</h2>
+            </div>
+
+            <div class="score-container">
+                <div class="score-circle" style="border-color: {{ resultado.color }}">
+                    <span class="score-value">{{ resultado.prediccion }}</span>
+                    <span class="score-max">/10</span>
+                </div>
+                <div class="score-info">
+                    <h3 class="nivel-badge" style="background-color: {{ resultado.color }}">
+                        {{ resultado.nivel }}
+                    </h3>
+                    <p class="descripcion">{{ resultado.descripcion }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Factores de Riesgo -->
+        {% if resultado.factores_riesgo %}
+        <div class="result-card">
+            <h2 class="card-title">Factores de Riesgo Identificados</h2>
+            <div class="factores-grid">
+                {% for factor in resultado.factores_riesgo %}
+                <div class="factor-item">
+                    <div class="factor-header">
+                        <span class="factor-icon">⚠️</span>
+                        <h4>{{ factor.factor }}</h4>
+                    </div>
+                    <p class="factor-valor">{{ factor.valor }}</p>
+                    <span class="factor-impacto impacto-{{ factor.impacto|lower }}">
+                        Impacto: {{ factor.impacto }}
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Datos Analizados -->
+        <div class="result-card">
+            <h2 class="card-title">Resumen de tus Habitos</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-icon">📱</span>
+                    <span class="stat-value">{{ resultado.datos_analizados.horas_diarias }}</span>
+                    <span class="stat-label">Horas diarias en celular</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">📲</span>
+                    <span class="stat-value">{{ resultado.datos_analizados.apps_usadas|length }}</span>
+                    <span class="stat-label">Apps usadas</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">💬</span>
+                    <span class="stat-value">{{ resultado.datos_analizados.tiempo_redes }}</span>
+                    <span class="stat-label">Horas en redes sociales</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">😴</span>
+                    <span class="stat-value">{{ resultado.datos_analizados.horas_sueno }}</span>
+                    <span class="stat-label">Horas de sueno</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recomendaciones -->
+        <div class="result-card">
+            <h2 class="card-title">Recomendaciones Personalizadas</h2>
+            <div class="recomendaciones-list">
+                {% for rec in resultado.recomendaciones %}
+                <div class="recomendacion-item tipo-{{ rec.tipo }}">
+                    <div class="rec-icon">
+                        {% if rec.tipo == 'critico' %}
+                        🔴
+                        {% elif rec.tipo == 'advertencia' %}
+                        ⚠️
+                        {% else %}
+                        💡
+                        {% endif %}
+                    </div>
+                    <div class="rec-content">
+                        <h4>{{ rec.titulo }}</h4>
+                        <p>{{ rec.mensaje }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="actions">
+            <a href="{{ url_for('formulario') }}" class="btn btn-secondary">Realizar otro analisis</a>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Volver al inicio</a>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 FocusUp | Proyecto desarrollado por Sebastian Casas / Miguel Diaz</p>
+    </footer>
+
+    <script>
+        // Animacion del score al cargar
+        window.addEventListener('load', function() {
+            const scoreValue = document.querySelector('.score-value');
+            const targetScore = parseFloat(scoreValue.textContent);
+            let currentScore = 0;
+            const duration = 2000;
+            const increment = targetScore / (duration / 16);
+
+            const animate = () => {
+                currentScore += increment;
+                if (currentScore < targetScore) {
+                    scoreValue.textContent = currentScore.toFixed(1);
+                    requestAnimationFrame(animate);
+                } else {
+                    scoreValue.textContent = targetScore.toFixed(1);
+                }
+            };
+
+            scoreValue.textContent = '0.0';
+            animate();
+        });
+    </script>
+</body>
+</html>
