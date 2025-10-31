@@ -59,7 +59,7 @@ body {
 }
 
 .profile-email {
-    color: #666;
+    color: #422222;
     font-size: 0.9em;
     word-break: break-word;
 }
@@ -132,8 +132,8 @@ body {
 }
 
 .btn-secondary-sidebar {
-    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
-    color: white;
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+color: white;
 }
 
 .btn-secondary-sidebar:hover {
@@ -142,7 +142,7 @@ body {
 }
 
 .btn-danger-sidebar {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: #ff0022;
     color: white;
 }
 
