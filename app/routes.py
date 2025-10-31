@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash, session
 from app import app
-from app.models import Usuario
+from app.models import Usuario, Resultado
 from functools import wraps
 import sys
 from pathlib import Path
@@ -73,6 +73,7 @@ def index():
     return render_template('index.html')
 
 @app.route("/formulario")
+@login_required
 def formulario():
     return render_template("formulario.html")
 
@@ -127,9 +128,10 @@ def register():
         return render_template('newuser.html', error="Error al procesar el registro")
 
 @app.route('/cuenta')
+@app.route('/cuenta/<seccion>')
 @login_required
-def cuenta():
-    """Muestra la página de cuenta del usuario"""
+def cuenta(seccion='datos-personales'):
+    """Muestra la página de cuenta del usuario con la sección especificada"""
     usuario_id = session.get('usuario_id')
 
     # Si es usuario de prueba (ID 0), mostrar datos básicos
@@ -143,6 +145,9 @@ def cuenta():
             'grado_escolaridad': None,
             'fecha_nacimiento': None
         }
+        resultados = []
+        resultados_semana = []
+        estadisticas = None
     else:
         # Obtener datos del usuario desde la base de datos
         usuario = Usuario.obtener_por_id(usuario_id)
@@ -151,7 +156,22 @@ def cuenta():
             flash('Error al cargar los datos del usuario', 'error')
             return redirect(url_for('index'))
 
-    return render_template('cuenta.html', usuario=usuario)
+        # Obtener resultados si estamos en la sección de resultados
+        if seccion == 'resultados':
+            resultados = Resultado.obtener_por_usuario(usuario_id, limite=5)
+            resultados_semana = Resultado.obtener_ultimos_7_dias(usuario_id)
+            estadisticas = Resultado.obtener_estadisticas_usuario(usuario_id)
+        else:
+            resultados = []
+            resultados_semana = []
+            estadisticas = None
+
+    return render_template('cuenta.html',
+                         usuario=usuario,
+                         seccion_activa=seccion,
+                         resultados=resultados,
+                         resultados_semana=resultados_semana,
+                         estadisticas=estadisticas)
 
 @app.route('/actualizar_cuenta', methods=['POST'])
 @login_required
@@ -258,6 +278,17 @@ def procesar_formulario():
         # Realizar prediccion
         resultado = predictor.predecir(datos_formulario, datos_cuenta)
 
+        # Guardar resultado en la base de datos (solo para usuarios reales, no de prueba)
+        if usuario_id and usuario_id != 0:
+            Resultado.guardar_resultado(
+                usuario_id=usuario_id,
+                nivel_prediccion=resultado['nivel'],
+                puntaje_prediccion=resultado['prediccion'],
+                datos_formulario=datos_formulario,
+                recomendaciones=resultado['recomendaciones'],
+                factores_riesgo=resultado['factores_riesgo']
+            )
+
         # Guardar resultado en sesion para mostrarlo
         session['ultimo_resultado'] = resultado
 
@@ -281,3 +312,48 @@ def resultados():
         return redirect(url_for('formulario'))
 
     return render_template('resultados.html', resultado=resultado)
+
+@app.route('/cambiar_contrasena', methods=['POST'])
+@login_required
+def cambiar_contrasena():
+    """Cambia la contraseña del usuario"""
+    try:
+        usuario_id = session.get('usuario_id')
+
+        # No permitir cambio de contraseña para usuarios de prueba
+        if usuario_id == 0:
+            flash('Los usuarios de prueba no pueden cambiar su contraseña', 'warning')
+            return redirect(url_for('cuenta', seccion='seguridad'))
+
+        # Obtener datos del formulario
+        clave_actual = request.form.get('clave_actual', '')
+        clave_nueva = request.form.get('clave_nueva', '')
+        confirmar_clave = request.form.get('confirmar_clave', '')
+
+        # Validaciones
+        if not all([clave_actual, clave_nueva, confirmar_clave]):
+            flash('Todos los campos son obligatorios', 'error')
+            return redirect(url_for('cuenta', seccion='seguridad'))
+
+        if clave_nueva != confirmar_clave:
+            flash('Las contraseñas nuevas no coinciden', 'error')
+            return redirect(url_for('cuenta', seccion='seguridad'))
+
+        if len(clave_nueva) < 6:
+            flash('La contraseña debe tener al menos 6 caracteres', 'error')
+            return redirect(url_for('cuenta', seccion='seguridad'))
+
+        # Cambiar contraseña
+        exito, mensaje = Usuario.cambiar_contrasena(usuario_id, clave_actual, clave_nueva)
+
+        if exito:
+            flash(mensaje, 'success')
+        else:
+            flash(mensaje, 'error')
+
+        return redirect(url_for('cuenta', seccion='seguridad'))
+
+    except Exception as e:
+        print(f"Error al cambiar contraseña: {e}")
+        flash('Error al procesar el cambio de contraseña', 'error')
+        return redirect(url_for('cuenta', seccion='seguridad'))
