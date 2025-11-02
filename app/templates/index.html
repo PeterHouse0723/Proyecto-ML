@@ -41,6 +41,129 @@
 
     <!-- Contenido principal -->
     <main>
+        <!-- Dashboard de Resultados -->
+        {% if ultimos_resultados %}
+        <section class="dashboard-section">
+            <div class="dashboard-header">
+                <h2>Tu Progreso en FocusUp</h2>
+                <p>Resumen de tus ultimas evaluaciones</p>
+            </div>
+
+            <!-- Estadisticas Resumen -->
+            {% if estadisticas and estadisticas.total_evaluaciones > 0 %}
+            <div class="stats-summary">
+                <div class="stat-box">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-info">
+                        <h3>{{ estadisticas.total_evaluaciones }}</h3>
+                        <p>Evaluaciones</p>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-info">
+                        <h3>{{ "%.2f"|format(estadisticas.promedio_puntaje) }}</h3>
+                        <p>Promedio</p>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-info">
+                        <h3>{{ ultimos_resultados[0].nivel_prediccion }}</h3>
+                        <p>Ultimo Nivel</p>
+                    </div>
+                </div>
+                <div class="stat-box {% if tendencia %}stat-box-tendencia tendencia-{{ tendencia.tipo }}{% endif %}">
+                    <div class="stat-icon">{% if tendencia %}{{ tendencia.icono }}{% else %}📅{% endif %}</div>
+                    <div class="stat-info">
+                        <h3>{% if tendencia %}{{ tendencia.texto }}{% else %}{{ ultimos_resultados[0].fecha_creacion.strftime('%d/%m') }}{% endif %}</h3>
+                        <p>{% if tendencia %}Tendencia{% else %}Ultima Evaluacion{% endif %}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Insights Automaticos -->
+            {% if insights %}
+            <div class="insights-section">
+                <h3>💡 Insights de tu Progreso</h3>
+                <div class="insights-grid">
+                    {% for insight in insights %}
+                    <div class="insight-card">
+                        <div class="insight-icon">{{ insight.icono }}</div>
+                        <div class="insight-content">
+                            <h4>{{ insight.titulo }}</h4>
+                            <p>{{ insight.mensaje }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Grafica de Evolucion -->
+            <div class="chart-container">
+                <h3>Evolucion de tu Puntaje</h3>
+                <canvas id="puntajeChart"></canvas>
+            </div>
+
+            <!-- Grafica de Radar - Analisis de Aspectos -->
+            {% if ultimos_resultados %}
+            <div class="chart-container">
+                <h3>Analisis Multidimensional</h3>
+                <p class="chart-subtitle">Comparativa de diferentes aspectos de tu ultimo resultado</p>
+                <canvas id="radarChart"></canvas>
+            </div>
+            {% endif %}
+
+            <!-- Ultimos Resultados -->
+            <div class="recent-results">
+                <h3>Ultimas Evaluaciones</h3>
+                <div class="results-grid">
+                    {% for resultado in ultimos_resultados[:3] %}
+                    <div class="result-mini-card">
+                        <div class="result-mini-header">
+                            <span class="nivel-badge nivel-{{ resultado.nivel_prediccion|lower|replace(' ', '-') }}">
+                                {{ resultado.nivel_prediccion }}
+                            </span>
+                            <span class="result-date-mini">{{ resultado.fecha_creacion.strftime('%d/%m/%Y') }}</span>
+                        </div>
+                        <div class="result-mini-body">
+                            <div class="puntaje-display">
+                                <span class="puntaje-num">{{ "%.1f"|format(resultado.puntaje_prediccion) }}</span>
+                                <span class="puntaje-label">/10</span>
+                            </div>
+                            <div class="result-mini-recs">
+                                <p><strong>Top Recomendacion:</strong></p>
+                                {% if resultado.recomendaciones %}
+                                <p class="rec-text">{{ resultado.recomendaciones[0].titulo }}</p>
+                                <p class="rec-detail">{{ resultado.recomendaciones[0].mensaje }}</p>
+                                {% else %}
+                                <p class="rec-text">Sigue asi!</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <a href="{{ url_for('cuenta', seccion='resultados') }}" class="btn-ver-todos">Ver Historial Completo</a>
+            </div>
+        </section>
+        {% else %}
+        <!-- Mensaje si no hay resultados -->
+        <section class="no-results-section">
+            <div class="no-results-card">
+                <div class="no-results-icon">📊</div>
+                <h3>Aun no tienes evaluaciones</h3>
+                <p>Completa tu primera evaluacion para ver tu progreso aqui</p>
+                <a href="{{ url_for('formulario') }}" class="btn-primary-dashboard">Hacer Primera Evaluacion</a>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Separador -->
+        <div class="content-divider"></div>
+
         <!-- Primer bloque -->
         <div class="blockaz">
             <div class="blockaz-left">
@@ -85,7 +208,7 @@
         </div>
 
         <!-- cuarto bloque -->
-         
+
             <div class="block_1">
         <div class="block_1-left">
             <h2 class="block_1-title">Causas frecuentes de la procrastinación</h2>
@@ -97,6 +220,84 @@
         </div>
         <div class="block_1-right">
             <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="block_1-img">
+        </div>
+        </div>
+
+        <!-- Nuevo bloque: Estadisticas Impactantes -->
+        <div class="blockaz">
+        <div class="blockaz-left">
+            <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="blockaz-img">
+        </div>
+        <div class="blockaz-right">
+            <h2 class="blockaz-title">Estadísticas Impactantes</h2>
+            <p><li>El <strong>88%</strong> de los estudiantes procrastinan al menos una hora al día</li></p>
+            <p><li>Los jóvenes revisan su celular en promedio <strong>96 veces al día</strong></li></p>
+            <p><li>El <strong>70%</strong> del tiempo en redes sociales se considera improductivo</li></p>
+            <p><li>La procrastinación aumenta el estrés en un <strong>45%</strong></li></p>
+            <p><li>Estudiantes que controlan su uso del celular mejoran sus calificaciones en un <strong>30%</strong></li></p>
+        </div>
+        </div>
+
+        <!-- Nuevo bloque: Tecnicas Anti-Procrastinacion -->
+        <div class="block_1">
+        <div class="block_1-left">
+            <h2 class="block_1-title">Técnicas Comprobadas</h2>
+            <p class="block_1-text">
+            <p><li><strong>Técnica Pomodoro:</strong> 25 minutos de trabajo concentrado, 5 de descanso</li></p>
+            <p><li><strong>Regla de los 2 minutos:</strong> Si toma menos de 2 minutos, hazlo ya</li></p>
+            <p><li><strong>Método 1-3-5:</strong> 1 tarea grande, 3 medianas, 5 pequeñas al día</li></p>
+            <p><li><strong>Timeboxing:</strong> Asigna bloques de tiempo específicos para cada actividad</li></p>
+            <p><li><strong>Elimina distracciones:</strong> Modo no molestar durante estudio</li></p>
+        </div>
+        <div class="block_1-right">
+            <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="block_1-img">
+        </div>
+        </div>
+
+        <!-- Nuevo bloque: Impacto del Celular -->
+        <div class="blockaz">
+        <div class="blockaz-left">
+            <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="blockaz-img">
+        </div>
+        <div class="blockaz-right">
+            <h2 class="blockaz-title">Impacto del Uso del Celular</h2>
+            <p><li><strong>Atención fragmentada:</strong> Cada notificación interrumpe tu concentración por 23 minutos</li></p>
+            <p><li><strong>Calidad del sueño:</strong> La luz azul reduce la melatonina en un 50%</li></p>
+            <p><li><strong>Productividad:</strong> El multitasking reduce la eficiencia en un 40%</li></p>
+            <p><li><strong>Bienestar mental:</strong> Más de 3 horas en redes aumenta ansiedad</li></p>
+            <p><li><strong>Memoria:</strong> El uso excesivo afecta la capacidad de retención</li></p>
+        </div>
+        </div>
+
+        <!-- Nuevo bloque: Herramientas Utiles -->
+        <div class="block_1">
+        <div class="block_1-left">
+            <h2 class="block_1-title">Herramientas Recomendadas</h2>
+            <p class="block_1-text">
+            <p><li><strong>Forest:</strong> App que gamifica la concentración plantando árboles virtuales</li></p>
+            <p><li><strong>Freedom:</strong> Bloquea apps y sitios web durante tiempo de estudio</li></p>
+            <p><li><strong>Notion/Todoist:</strong> Organizadores de tareas y proyectos</li></p>
+            <p><li><strong>Screen Time:</strong> Monitorea y limita uso del dispositivo</li></p>
+            <p><li><strong>Cold Turkey:</strong> Bloqueo estricto de distracciones digitales</li></p>
+        </div>
+        <div class="block_1-right">
+            <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="block_1-img">
+        </div>
+        </div>
+
+        <!-- Nuevo bloque: Consejos Practicos -->
+        <div class="blockaz">
+        <div class="blockaz-left">
+            <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="blockaz-img">
+        </div>
+        <div class="blockaz-right">
+            <h2 class="blockaz-title">Consejos Prácticos para Estudiantes</h2>
+            <p><li>Crea una rutina de estudio consistente y respétala</li></p>
+            <p><li>Usa el celular en modo avión durante sesiones de estudio</li></p>
+            <p><li>Divide proyectos grandes en tareas pequeñas y manejables</li></p>
+            <p><li>Recompénsate después de completar tareas importantes</li></p>
+            <p><li>Busca un compañero de estudio para accountability</li></p>
+            <p><li>Mantén tu espacio de estudio ordenado y libre de distracciones</li></p>
         </div>
         </div>
        
@@ -140,5 +341,192 @@
     <footer class="main-footer">
         <p>© 2025 FocusUp | Proyecto desarrollado por Sebastián Casas / Miguel Díaz</p>
     </footer>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Script para la grafica -->
+    {% if ultimos_resultados %}
+    <script>
+        // Datos para la grafica (invertir orden para mostrar del mas antiguo al mas reciente)
+        const resultados = {{ ultimos_resultados|reverse|list|tojson }};
+
+        const fechas = resultados.map(r => {
+            const fecha = new Date(r.fecha_creacion);
+            return fecha.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' });
+        });
+
+        const puntajes = resultados.map(r => r.puntaje_prediccion);
+
+        // Configuracion de la grafica
+        const ctx = document.getElementById('puntajeChart').getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(102, 126, 234, 0.5)');
+        gradient.addColorStop(1, 'rgba(118, 75, 162, 0.1)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: fechas,
+                datasets: [{
+                    label: 'Puntaje de Procrastinacion',
+                    data: puntajes,
+                    borderColor: 'rgb(102, 126, 234)',
+                    backgroundColor: gradient,
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: 'rgb(102, 126, 234)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14,
+                                family: "'Segoe UI', sans-serif"
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        titleFont: {
+                            size: 14
+                        },
+                        bodyFont: {
+                            size: 13
+                        },
+                        callbacks: {
+                            label: function(context) {
+                                return 'Puntaje: ' + context.parsed.y.toFixed(2) + '/10';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        ticks: {
+                            stepSize: 2,
+                            font: {
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Grafica de Radar - Analisis Multidimensional
+        const ultimoResultado = resultados[resultados.length - 1]; // Ultimo cronologicamente
+        const datosForm = ultimoResultado.datos_formulario;
+
+        // Calcular puntuaciones normalizadas (0-10) para cada aspecto
+        const aspectos = {
+            'Uso Diario': Math.max(0, 10 - (parseFloat(datosForm.daily_usage) / 10 * 10)), // Menos es mejor
+            'Horas de Sueno': Math.min(10, parseFloat(datosForm.sleephours) / 8 * 10), // 8 horas = 10 pts
+            'Rendimiento': parseFloat(datosForm.academic_perf) * 2, // 0-5 a 0-10
+            'Ejercicio': datosForm.exercise === 'frecuente' ? 10 : (datosForm.exercise === 'moderado' ? 6 : 3),
+            'Redes Sociales': Math.max(0, 10 - (parseFloat(datosForm.time_social_media) / 4 * 10)), // Menos es mejor
+            'Habitos': Math.max(0, 10 - (parseFloat(datosForm.screen_before_bed) / 2 * 10)) // Menos pantalla = mejor
+        };
+
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: Object.keys(aspectos),
+                datasets: [{
+                    label: 'Tu Evaluacion',
+                    data: Object.values(aspectos),
+                    backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                    borderColor: 'rgb(102, 126, 234)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgb(102, 126, 234)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(102, 126, 234)'
+                }, {
+                    label: 'Objetivo Ideal',
+                    data: [10, 10, 10, 10, 10, 10],
+                    backgroundColor: 'rgba(56, 239, 125, 0.1)',
+                    borderColor: 'rgba(56, 239, 125, 0.5)',
+                    borderWidth: 1,
+                    borderDash: [5, 5],
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 10,
+                        ticks: {
+                            stepSize: 2,
+                            font: {
+                                size: 11
+                            }
+                        },
+                        pointLabels: {
+                            font: {
+                                size: 13,
+                                weight: '600'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 13
+                            },
+                            padding: 15
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.r.toFixed(1) + '/10';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    {% endif %}
 </body>
 </html>

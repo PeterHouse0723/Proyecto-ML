@@ -70,7 +70,71 @@ def login():
 @login_required
 def index():
     # Página protegida (requiere login)
-    return render_template('index.html')
+    usuario_id = session.get('usuario_id')
+
+    # Obtener datos del usuario y sus resultados
+    if usuario_id and usuario_id != 0:
+        usuario = Usuario.obtener_por_id(usuario_id)
+        # Obtener últimos 5 resultados para mostrar en el dashboard
+        ultimos_resultados = Resultado.obtener_por_usuario(usuario_id, limite=5)
+        estadisticas = Resultado.obtener_estadisticas_usuario(usuario_id)
+
+        # Calcular tendencia y generar insights
+        tendencia = None
+        insights = []
+        if ultimos_resultados and len(ultimos_resultados) >= 2:
+            ultimo = ultimos_resultados[0]['puntaje_prediccion']
+            anterior = ultimos_resultados[1]['puntaje_prediccion']
+            diferencia = ultimo - anterior
+
+            if abs(diferencia) < 0.5:
+                tendencia = {'tipo': 'estable', 'texto': 'Estable', 'icono': '➡️'}
+            elif diferencia > 0:
+                tendencia = {'tipo': 'subiendo', 'texto': f'Subió {abs(diferencia):.1f} pts', 'icono': '📈'}
+            else:
+                tendencia = {'tipo': 'bajando', 'texto': f'Bajó {abs(diferencia):.1f} pts', 'icono': '📉'}
+
+            # Generar insights automáticos
+            if len(ultimos_resultados) >= 3:
+                puntajes_recientes = [r['puntaje_prediccion'] for r in ultimos_resultados[:3]]
+                promedio_reciente = sum(puntajes_recientes) / len(puntajes_recientes)
+
+                if promedio_reciente < estadisticas['promedio_puntaje']:
+                    insights.append({
+                        'icono': '🎯',
+                        'titulo': 'Mejora Reciente',
+                        'mensaje': f'Tus últimas 3 evaluaciones están {((estadisticas["promedio_puntaje"] - promedio_reciente) / estadisticas["promedio_puntaje"] * 100):.0f}% mejor que tu promedio general'
+                    })
+
+                # Análisis de consistencia
+                desviacion = max(puntajes_recientes) - min(puntajes_recientes)
+                if desviacion < 1.0:
+                    insights.append({
+                        'icono': '✨',
+                        'titulo': 'Comportamiento Consistente',
+                        'mensaje': 'Mantienes un nivel estable en tus últimas evaluaciones'
+                    })
+
+                # Racha de mejora
+                if all(puntajes_recientes[i] <= puntajes_recientes[i+1] for i in range(len(puntajes_recientes)-1)):
+                    insights.append({
+                        'icono': '🔥',
+                        'titulo': 'Racha de Mejora',
+                        'mensaje': 'Has mejorado consecutivamente en tus últimas 3 evaluaciones'
+                    })
+    else:
+        usuario = {'nombre': session.get('nombre', '')}
+        ultimos_resultados = []
+        estadisticas = None
+        tendencia = None
+        insights = []
+
+    return render_template('index.html',
+                         usuario=usuario,
+                         ultimos_resultados=ultimos_resultados,
+                         estadisticas=estadisticas,
+                         tendencia=tendencia,
+                         insights=insights)
 
 @app.route("/formulario")
 @login_required

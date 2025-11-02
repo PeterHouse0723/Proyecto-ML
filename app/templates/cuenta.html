@@ -228,7 +228,7 @@
                                     <h4>Recomendaciones:</h4>
                                     <ul>
                                         {% for rec in resultado.recomendaciones[:3] %}
-                                        <li>{{ rec }}</li>
+                                        <li><strong>{{ rec.titulo }}:</strong> {{ rec.mensaje }}</li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -276,7 +276,7 @@
                                             <h5>Recomendaciones:</h5>
                                             <ul>
                                                 {% for rec in resultado.recomendaciones %}
-                                                <li>{{ rec }}</li>
+                                                <li><strong>{{ rec.titulo }}:</strong> {{ rec.mensaje }}</li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
