@@ -25,7 +25,7 @@
     </header>
     <!-- Imagen de usuario -->
             <div class="user-menu-container">
-                <img src="{{ url_for('static', filename='img/user.png') }}" alt="Usuario" class="user-icon" id="userIcon">
+                <img src="{{ url_for('static', filename='img/perfil.jpg') }}" alt="Usuario" class="user-icon" id="userIcon">
 
                 <!-- Menú desplegable -->
                 <div class="dropdown-menu" id="dropdownMenu">
@@ -107,14 +107,7 @@
                 <canvas id="puntajeChart"></canvas>
             </div>
 
-            <!-- Grafica de Radar - Analisis de Aspectos -->
-            {% if ultimos_resultados %}
-            <div class="chart-container">
-                <h3>Analisis Multidimensional</h3>
-                <p class="chart-subtitle">Comparativa de diferentes aspectos de tu ultimo resultado</p>
-                <canvas id="radarChart"></canvas>
-            </div>
-            {% endif %}
+        
 
             <!-- Ultimos Resultados -->
             <div class="recent-results">
@@ -167,67 +160,10 @@
         <!-- Primer bloque -->
         <div class="blockaz">
             <div class="blockaz-left">
-            <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Azul" class="blockaz-img">
+            <img src="{{ url_for('static', filename='img/estadisticas.jpg') }}" alt="Img Azul" class="blockaz-img">
             </div>
-            <div class="blockaz-right">
-            <h2 class="blockaz-title">Objetivo de FocusUp</h2>
-       <p class="block_1_LN-text">Desarrollar un modelo de ML que prediga la cantidad de horas de procrastinación diaria de los estudiantes en los colegios y universidades, 
-        a partir de los datos de uso del teléfono celular y las aplicaciones más utilizadas </p>
-        </div>
-            </div>
-            </div>
-        </div>
-    
-        <!-- Segundo bloque -->
-         </div>
-            <div class="block_1">
-        <div class="block_1-left">
-            <h2 class="block_1-title">Objetivos específicos</h2>
-            <p class="block_1-text">
-            <p><li>Recopilar información relevante sobre hábitos digitales y académicos de estudiantes universitarios.</li></p>
-            <p><li>Identificar los factores clave que influyen en la procrastinación con análisis de datos y ML.</li></p>
-            <p><li>Entrenar un modelo que estime el nivel de procrastinación de forma personalizada y precisa.</li></p>
-            <p><li>Mostrar resultados y recomendaciones prácticas en la plataforma FocusUp para mejorar el tiempo y bienestar digital.
+           
 
-</li></p>
-        </div>
-        <div class="block_1-right">
-            <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="block_1-img">
-        </div>
-        </div>
-        <!-- Tercer bloque -->           
-         <div class="blockaz">
-        <div class="blockaz-left">
-       
-        <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="blockaz-img">
-        </div>
-         <div class="blockaz-right">
-            <h2 class="blockaz-title">¿Qué es la procrastinación?</h2>
-            <p class="blockaz-text">La procrastinación es el acto de retrasar o posponer tareas o decisiones. A menudo se debe a la falta de motivación, miedo al fracaso o simplemente a la distracción.</p>
-        </div>
-        </div>
-
-        <!-- cuarto bloque -->
-
-            <div class="block_1">
-        <div class="block_1-left">
-            <h2 class="block_1-title">Causas frecuentes de la procrastinación</h2>
-            <p class="block_1-text">
-           <p><li>Uso excesivo de celulares y redes sociales.</li></p>
-            <p><li>Falta de motivación y metas claras.</li></p>
-            <p><li>Miedo al fracaso.</li></p>
-            <p><li>Desorganización y no priorizar tareas.</li></p>
-        </div>
-        <div class="block_1-right">
-            <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="block_1-img">
-        </div>
-        </div>
-
-        <!-- Nuevo bloque: Estadisticas Impactantes -->
-        <div class="blockaz">
-        <div class="blockaz-left">
-            <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="blockaz-img">
-        </div>
         <div class="blockaz-right">
             <h2 class="blockaz-title">Estadísticas Impactantes</h2>
             <p><li>El <strong>88%</strong> de los estudiantes procrastinan al menos una hora al día</li></p>
@@ -250,14 +186,14 @@
             <p><li><strong>Elimina distracciones:</strong> Modo no molestar durante estudio</li></p>
         </div>
         <div class="block_1-right">
-            <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="block_1-img">
+            <img src="{{ url_for('static', filename='img/tecnicas.jpg') }}" alt="Img Ref-Procrastinacion" class="block_1-img">
         </div>
         </div>
 
         <!-- Nuevo bloque: Impacto del Celular -->
         <div class="blockaz">
         <div class="blockaz-left">
-            <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="blockaz-img">
+            <img src="{{ url_for('static', filename='img/usocelular.jpg') }}" alt="Img Ref-Procrastinacion" class="blockaz-img">
         </div>
         <div class="blockaz-right">
             <h2 class="blockaz-title">Impacto del Uso del Celular</h2>
@@ -281,14 +217,14 @@
             <p><li><strong>Cold Turkey:</strong> Bloqueo estricto de distracciones digitales</li></p>
         </div>
         <div class="block_1-right">
-            <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="block_1-img">
+            <img src="{{ url_for('static', filename='img/herramientas.jpg') }}" alt="Img Ref-Procrastinacion" class="block_1-img">
         </div>
         </div>
 
         <!-- Nuevo bloque: Consejos Practicos -->
         <div class="blockaz">
         <div class="blockaz-left">
-            <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="blockaz-img">
+            <img src="{{ url_for('static', filename='img/consejos.jpg') }}" alt="Img Ref-Procrastinacion" class="blockaz-img">
         </div>
         <div class="blockaz-right">
             <h2 class="blockaz-title">Consejos Prácticos para Estudiantes</h2>
@@ -301,20 +237,7 @@
         </div>
         </div>
        
-        <!-- quinto bloque -->         
-         <div class="blockaz">
-        <div class="blockaz-left">
-       
-        <img src="{{ url_for('static', filename='img/Procras.png') }}" alt="Img Ref-Procrastinacion" class="blockaz-img">
-        </div>
-         <div class="blockaz-right">
-            <h2 class="blockaz-title">Consecuencias de procrastinar</h2>
-            <p><li>Disminución del rendimiento académico</li></p>
-            <p><li>Sentimientos de culpa y frustración</li></p>
-            <p><li>Aumento de estrés y ansiedad</li></p>
-            <p><li>Pérdida de tiempo y oportunidades</li></p>
-        </div>
-        </div>
+    
         <!-- referencias bibliograficas-->
         <div class="block1 referencias">
         <h2 class="block1-title">Referencias bibliográficas</h2>
