@@ -36,9 +36,11 @@ env/
 .env
 .env.local
 
-# Database
+# Database SQLite
 *.db
+*.sqlite
 *.sqlite3
+instance/
 
 # Logs
 *.log

@@ -25,7 +25,7 @@ class Usuario:
 
         query = """
             INSERT INTO usuarios (nombre, apellido, edad, genero, correo, clave)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            VALUES (?, ?, ?, ?, ?, ?)
         """
         params = (nombre, apellido, edad, genero, correo, clave_hasheada)
 
@@ -42,7 +42,7 @@ class Usuario:
         Returns:
             dict: Datos del usuario o None si no existe
         """
-        query = "SELECT * FROM usuarios WHERE correo = %s"
+        query = "SELECT * FROM usuarios WHERE correo = ?"
         params = (correo,)
 
         resultado = db.fetch_query(query, params)
@@ -103,7 +103,7 @@ class Usuario:
         Returns:
             dict: Datos del usuario o None si no existe
         """
-        query = "SELECT id, nombre, apellido, edad, genero, correo, grado_escolaridad, fecha_nacimiento FROM usuarios WHERE id = %s"
+        query = "SELECT id, nombre, apellido, edad, genero, correo, grado_escolaridad, fecha_nacimiento FROM usuarios WHERE id = ?"
         params = (usuario_id,)
 
         resultado = db.fetch_query(query, params)
@@ -129,9 +129,9 @@ class Usuario:
         """
         query = """
             UPDATE usuarios
-            SET nombre = %s, apellido = %s, edad = %s, genero = %s,
-                correo = %s, grado_escolaridad = %s, fecha_nacimiento = %s
-            WHERE id = %s
+            SET nombre = ?, apellido = ?, edad = ?, genero = ?,
+                correo = ?, grado_escolaridad = ?, fecha_nacimiento = ?
+            WHERE id = ?
         """
         params = (nombre, apellido, edad, genero, correo, grado_escolaridad, fecha_nacimiento, usuario_id)
 
@@ -152,7 +152,7 @@ class Usuario:
             tuple: (bool, str) - (exito, mensaje)
         """
         # Obtener usuario con contraseña
-        query = "SELECT clave FROM usuarios WHERE id = %s"
+        query = "SELECT clave FROM usuarios WHERE id = ?"
         resultado = db.fetch_query(query, (usuario_id,))
 
         if not resultado:
@@ -168,7 +168,7 @@ class Usuario:
         clave_nueva_hash = generate_password_hash(clave_nueva)
 
         # Actualizar contraseña
-        query_update = "UPDATE usuarios SET clave = %s WHERE id = %s"
+        query_update = "UPDATE usuarios SET clave = ? WHERE id = ?"
         resultado_update = db.execute_query(query_update, (clave_nueva_hash, usuario_id))
 
         if resultado_update is not None:
@@ -201,7 +201,7 @@ class Resultado:
         query = """
             INSERT INTO resultados (usuario_id, nivel_prediccion, puntaje_prediccion,
                                    datos_formulario, recomendaciones, factores_riesgo)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            VALUES (?, ?, ?, ?, ?, ?)
         """
         params = (
             usuario_id,
@@ -227,25 +227,40 @@ class Resultado:
             list: Lista de resultados
         """
         import json
+        from datetime import datetime
 
         query = """
             SELECT id, nivel_prediccion, puntaje_prediccion,
                    datos_formulario, recomendaciones, factores_riesgo, fecha_creacion
             FROM resultados
-            WHERE usuario_id = %s
+            WHERE usuario_id = ?
             ORDER BY fecha_creacion DESC
-            LIMIT %s
+            LIMIT ?
         """
         params = (usuario_id, limite)
 
         resultados = db.fetch_query(query, params)
 
-        # Decodificar JSON
+        # Decodificar JSON y convertir fechas
         if resultados:
             for resultado in resultados:
                 resultado['datos_formulario'] = json.loads(resultado['datos_formulario'])
                 resultado['recomendaciones'] = json.loads(resultado['recomendaciones'])
                 resultado['factores_riesgo'] = json.loads(resultado['factores_riesgo'])
+
+                # Convertir fecha_creacion de string a datetime
+                if isinstance(resultado['fecha_creacion'], str):
+                    try:
+                        resultado['fecha_creacion'] = datetime.strptime(
+                            resultado['fecha_creacion'], '%Y-%m-%d %H:%M:%S'
+                        )
+                    except ValueError:
+                        try:
+                            resultado['fecha_creacion'] = datetime.strptime(
+                                resultado['fecha_creacion'], '%Y-%m-%d %H:%M:%S.%f'
+                            )
+                        except ValueError:
+                            pass
 
         return resultados if resultados else []
 
@@ -261,25 +276,40 @@ class Resultado:
             list: Lista de resultados de la última semana
         """
         import json
+        from datetime import datetime
 
         query = """
             SELECT id, nivel_prediccion, puntaje_prediccion,
                    datos_formulario, recomendaciones, factores_riesgo, fecha_creacion
             FROM resultados
-            WHERE usuario_id = %s
-              AND fecha_creacion >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+            WHERE usuario_id = ?
+              AND fecha_creacion >= datetime('now', '-7 days')
             ORDER BY fecha_creacion DESC
         """
         params = (usuario_id,)
 
         resultados = db.fetch_query(query, params)
 
-        # Decodificar JSON
+        # Decodificar JSON y convertir fechas
         if resultados:
             for resultado in resultados:
                 resultado['datos_formulario'] = json.loads(resultado['datos_formulario'])
                 resultado['recomendaciones'] = json.loads(resultado['recomendaciones'])
                 resultado['factores_riesgo'] = json.loads(resultado['factores_riesgo'])
+
+                # Convertir fecha_creacion de string a datetime
+                if isinstance(resultado['fecha_creacion'], str):
+                    try:
+                        resultado['fecha_creacion'] = datetime.strptime(
+                            resultado['fecha_creacion'], '%Y-%m-%d %H:%M:%S'
+                        )
+                    except ValueError:
+                        try:
+                            resultado['fecha_creacion'] = datetime.strptime(
+                                resultado['fecha_creacion'], '%Y-%m-%d %H:%M:%S.%f'
+                            )
+                        except ValueError:
+                            pass
 
         return resultados if resultados else []
 
@@ -302,7 +332,7 @@ class Resultado:
                 MIN(puntaje_prediccion) as puntaje_minimo,
                 MAX(fecha_creacion) as ultima_evaluacion
             FROM resultados
-            WHERE usuario_id = %s
+            WHERE usuario_id = ?
         """
         params = (usuario_id,)
 
